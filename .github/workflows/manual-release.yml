@@ -59,18 +59,15 @@ jobs:
           PREV_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
           
           if [ -z "$PREV_TAG" ]; then
-            echo "## Changes" > CHANGELOG_TEMP.md
-            echo "" >> CHANGELOG_TEMP.md
-            echo "First release" >> CHANGELOG_TEMP.md
+            CHANGELOG="## Changes\n\nFirst release"
           else
-            echo "## Changes since $PREV_TAG" > CHANGELOG_TEMP.md
-            echo "" >> CHANGELOG_TEMP.md
-            git log --pretty=format:"- %s" $PREV_TAG..HEAD >> CHANGELOG_TEMP.md
+            CHANGELOG="## Changes since $PREV_TAG\n\n$(git log --pretty=format:"- %s" $PREV_TAG..HEAD)"
           fi
           
-          echo "CHANGELOG_CONTENT<<EOF" >> $GITHUB_OUTPUT
-          cat CHANGELOG_TEMP.md >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          # Use delimiter to handle multiline content
+          echo "CHANGELOG_CONTENT<<DELIMITER" >> $GITHUB_OUTPUT
+          echo -e "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "DELIMITER" >> $GITHUB_OUTPUT
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
