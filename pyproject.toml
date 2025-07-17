@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gsx"
 description = "A Python decorator to push data to Google Cloud Platform"
-version = "1.1.0"
+version = "1.1.1"
 requires-python = ">=3.10"
 dependencies = [
     "google-cloud-storage",
