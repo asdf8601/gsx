@@ -43,12 +43,6 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
           echo "Tag version: ${VERSION}"
 
-      - name: Update version in pyproject.toml
-        run: |
-          VERSION=${{ steps.get_version.outputs.VERSION }}
-          sed -i "s/version = \".*\"/version = \"${VERSION}\"/" pyproject.toml
-          echo "Updated pyproject.toml version to ${VERSION}"
-
       - name: Build package
         run: uv build
 

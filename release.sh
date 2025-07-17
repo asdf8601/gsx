@@ -1,5 +1,5 @@
 #!/bin/bash
-# Release script for manual releases
+# Release script for manual releases with setuptools_scm
 # Usage: ./release.sh 1.2.3
 
 if [ $# -eq 0 ]; then
@@ -18,18 +18,10 @@ fi
 
 echo "Creating release for version $VERSION"
 
-# Update version in pyproject.toml
-sed -i.bak "s/version = \".*\"/version = \"$VERSION\"/" pyproject.toml
-rm pyproject.toml.bak
-
-# Commit version change
-git add pyproject.toml
-git commit -m "chore: bump version to $VERSION"
-
-# Create and push tag
+# Create and push tag (setuptools_scm will handle the version automatically)
 git tag -a "v$VERSION" -m "Release v$VERSION"
-git push origin main
 git push origin "v$VERSION"
 
 echo "Release v$VERSION created successfully!"
+echo "setuptools_scm will automatically use the tag version"
 echo "Check GitHub Actions for build progress: https://github.com/$(git config --get remote.origin.url | sed 's/.*github.com[:/]\(.*\)\.git/\1/')/actions"
